@@ -15,6 +15,10 @@ class DateConverter {
     return DateFormat('dd-MM-yyyy').format(dateTime);
   }
 
+  static String orderDateTime(String date, String time){
+    DateTime dateTime=DateTime.parse('$date $time');
+    return DateFormat('dd MM yyyy hh:mm a').format(dateTime);
+  }
   static String dateTimeStringToDateTime(String dateTime) {
     return DateFormat('dd MMM yyyy  ${_timeFormatter()}').format(DateFormat('yyyy-MM-dd HH:mm:ss').parse(dateTime));
   }

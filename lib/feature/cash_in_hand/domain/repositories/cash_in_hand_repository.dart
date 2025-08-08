@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stackfood_multivendor_driver/common/models/response_model.dart';
 import 'package:stackfood_multivendor_driver/api/api_client.dart';
+import 'package:stackfood_multivendor_driver/feature/cash_in_hand/domain/models/delivery_charges_list.dart';
 import 'package:stackfood_multivendor_driver/feature/cash_in_hand/domain/models/wallet_payment_model.dart';
 import 'package:stackfood_multivendor_driver/feature/cash_in_hand/domain/repositories/cash_in_hand_repository_interface.dart';
 import 'package:stackfood_multivendor_driver/helper/route_helper.dart';
@@ -58,6 +59,19 @@ class CashInHandRepository implements CashInHandRepositoryInterface {
       transactions.addAll(walletPaymentModel.transactions!);
     }
     return transactions;
+  }
+
+
+  Future<List<DeliveryCharges>?> getChargesList() async {
+    List<DeliveryCharges>? deliveryCharges;
+    Response response = await apiClient.getData('${AppConstants.originalDeliveryCharges}?token=${_getUserToken()}');
+    if(response.statusCode == 200) {
+      deliveryCharges = [];
+      DeliveryChargesListModel deliveryChargesListModel = DeliveryChargesListModel.fromJson(response.body);
+      deliveryCharges.addAll(deliveryChargesListModel.deliveryCharges!);
+    }
+    return deliveryCharges;
+
   }
 
   String _getUserToken() {

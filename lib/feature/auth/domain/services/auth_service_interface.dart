@@ -20,7 +20,8 @@ abstract class AuthServiceInterface {
   Future<bool> clearUserNumberAndPassword();
   String getUserToken();
   Future<FilePickerResult?> picFile(MediaData mediaData);
-  Future<XFile?> pickImageFromGallery();
+  Future<XFile?> pickImageFromGalleryCamera(bool isCamera);
+  Future<XFile?> pickImageFromCamera();
   List<MultipartDocument> prepareMultipartDocuments(List<String> inputTypeList, List<FilePickerResult> additionalDocuments);
   List<MultipartBody> prepareMultiPartsBody(XFile? pickedImage, List<XFile> pickedIdentities);
   List<int?> vehicleIds (List<VehicleModel>? vehicles);

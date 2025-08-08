@@ -110,6 +110,7 @@ class CustomTextFieldWidgetState extends State<CustomTextFieldWidget> {
         keyboardType: widget.isAmount ? TextInputType.number : widget.inputType,
         cursorColor: Theme.of(context).primaryColor,
         textCapitalization: widget.capitalization,
+        maxLength: widget.inputType == TextInputType.phone ?10:null,
         enabled: widget.isEnabled,
         autofocus: false,
         obscureText: widget.isPassword ? _obscureText : false,

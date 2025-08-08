@@ -90,20 +90,20 @@ class _ShiftDialogueWidgetState extends State<ShiftDialogueWidget> {
               padding: const EdgeInsets.symmetric(horizontal: Dimensions.fontSizeDefault, vertical: Dimensions.paddingSizeSmall),
               child: !profileController.shiftLoading ? Row(children: [
 
-                Expanded(child: CustomButtonWidget(
-                  buttonText: 'skip'.tr, backgroundColor: Theme.of(context).disabledColor, radius: 50,
-                  onPressed: () {
-                    profileController.updateActiveStatus(isUpdate: true).then((success) {
-                      if(success){
-                        Get.back();
-                        Future.delayed(const Duration(seconds: 2), (){
-                          Get.back();
-                        });
-                      }
-                    });
-                  },
-                )),
-                const SizedBox(width: Dimensions.paddingSizeSmall),
+                // Expanded(child: CustomButtonWidget(
+                //   buttonText: 'skip'.tr, backgroundColor: Theme.of(context).disabledColor, radius: 50,
+                //   onPressed: () {
+                //     profileController.updateActiveStatus(isUpdate: true).then((success) {
+                //       if(success){
+                //         Get.back();
+                //         Future.delayed(const Duration(seconds: 2), (){
+                //           Get.back();
+                //         });
+                //       }
+                //     });
+                //   },
+                // )),
+                // const SizedBox(width: Dimensions.paddingSizeSmall),
 
                 Expanded(child: CustomButtonWidget(
                   buttonText: 'submit'.tr,  radius: 50,

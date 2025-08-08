@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/material.dart';
 import 'package:stackfood_multivendor_driver/feature/auth/domain/services/auth_service_interface.dart';
 import 'package:stackfood_multivendor_driver/feature/splash/controllers/splash_controller.dart';
 import 'package:stackfood_multivendor_driver/api/api_client.dart';
@@ -13,72 +14,99 @@ import 'package:image_picker/image_picker.dart';
 
 class AuthController extends GetxController implements GetxService {
   final AuthServiceInterface authServiceInterface;
+
   AuthController({required this.authServiceInterface});
 
   bool _isLoading = false;
+
   bool get isLoading => _isLoading;
 
   XFile? _pickedImage;
+
   XFile? get pickedImage => _pickedImage;
 
   List<XFile> _pickedIdentities = [];
+
   List<XFile> get pickedIdentities => _pickedIdentities;
 
-  final List<String> _identityTypeList = ['passport', 'driving_license', 'nid'];
+  final List<String> _identityTypeList = [ 'driving_license', 'Pan Card'];
+
   List<String> get identityTypeList => _identityTypeList;
 
   int _identityTypeIndex = 0;
+
   int get identityTypeIndex => _identityTypeIndex;
 
   final List<String?> _dmTypeList = ['freelancer', 'salary_based'];
+
   List<String?> get dmTypeList => _dmTypeList;
 
   int _dmTypeIndex = -1;
+
   int get dmTypeIndex => _dmTypeIndex;
 
   List<VehicleModel>? _vehicles;
+
   List<VehicleModel>? get vehicles => _vehicles;
 
   List<int?>? _vehicleIds;
+
   List<int?>? get vehicleIds => _vehicleIds;
 
   int? _vehicleIndex = 0;
+
   int? get vehicleIndex => _vehicleIndex;
 
   double _dmStatus = 0.4;
+
   double get dmStatus => _dmStatus;
 
   bool _showPassView = false;
+
   bool get showPassView => _showPassView;
 
   bool _lengthCheck = false;
+
   bool get lengthCheck => _lengthCheck;
 
   bool _numberCheck = false;
+
   bool get numberCheck => _numberCheck;
 
   bool _uppercaseCheck = false;
+
   bool get uppercaseCheck => _uppercaseCheck;
 
   bool _lowercaseCheck = false;
+
   bool get lowercaseCheck => _lowercaseCheck;
 
   bool _spatialCheck = false;
+
   bool get spatialCheck => _spatialCheck;
 
   List<Data>? _dataList;
+
   List<Data>? get dataList => _dataList;
 
   List<dynamic>? _additionalList;
+
   List<dynamic>? get additionalList => _additionalList;
 
   bool _isActiveRememberMe = false;
+
   bool get isActiveRememberMe => _isActiveRememberMe;
 
-  void setJoinUsPageData({bool isUpdate = true}){
-    _dataList = authServiceInterface.processDataList(Get.find<SplashController>().configModel!.deliverymanAdditionalJoinUsPageData);
-    _additionalList = authServiceInterface.processAdditionalDataList(Get.find<SplashController>().configModel!.deliverymanAdditionalJoinUsPageData);
-    if(isUpdate) {
+  void setJoinUsPageData({bool isUpdate = true}) {
+    _dataList = authServiceInterface.processDataList(Get
+        .find<SplashController>()
+        .configModel!
+        .deliverymanAdditionalJoinUsPageData);
+    _additionalList = authServiceInterface.processAdditionalDataList(Get
+        .find<SplashController>()
+        .configModel!
+        .deliverymanAdditionalJoinUsPageData);
+    if (isUpdate) {
       update();
     }
   }
@@ -89,7 +117,7 @@ class AuthController extends GetxController implements GetxService {
   }
 
   void setAdditionalCheckData(int index, int i, String date) {
-    if(_additionalList![index][i] == date){
+    if (_additionalList![index][i] == date) {
       _additionalList![index][i] = 0;
     } else {
       _additionalList![index][i] = date;
@@ -99,7 +127,7 @@ class AuthController extends GetxController implements GetxService {
 
   Future<void> pickFile(int index, MediaData mediaData) async {
     FilePickerResult? result = await authServiceInterface.picFile(mediaData);
-    if(result != null) {
+    if (result != null) {
       _additionalList![index].add(result);
     }
     update();
@@ -110,9 +138,9 @@ class AuthController extends GetxController implements GetxService {
     update();
   }
 
-  void showHidePass({bool isUpdate = true}){
-    _showPassView = ! _showPassView;
-    if(isUpdate) {
+  void showHidePass({bool isUpdate = true}) {
+    _showPassView = !_showPassView;
+    if (isUpdate) {
       update();
     }
   }
@@ -151,8 +179,10 @@ class AuthController extends GetxController implements GetxService {
     return await authServiceInterface.clearSharedData();
   }
 
-  void saveUserNumberAndPassword(String number, String password, String countryCode) {
-    authServiceInterface.saveUserNumberAndPassword(number, password, countryCode);
+  void saveUserNumberAndPassword(String number, String password,
+      String countryCode) {
+    authServiceInterface.saveUserNumberAndPassword(
+        number, password, countryCode);
   }
 
   String getUserNumber() {
@@ -177,26 +207,26 @@ class AuthController extends GetxController implements GetxService {
 
   void setDMTypeIndex(int? dmType, bool notify) {
     _dmTypeIndex = dmType!;
-    if(notify) {
+    if (notify) {
       update();
     }
   }
 
-  void removeDmImage(){
+  void removeDmImage() {
     _pickedImage = null;
     update();
   }
 
   void setIdentityTypeIndex(String? identityType, bool notify) {
     int index0 = 0;
-    for(int index=0; index<_identityTypeList.length; index++) {
-      if(_identityTypeList[index] == identityType) {
+    for (int index = 0; index < _identityTypeList.length; index++) {
+      if (_identityTypeList[index] == identityType) {
         index0 = index;
         break;
       }
     }
     _identityTypeIndex = index0;
-    if(notify) {
+    if (notify) {
       update();
     }
   }
@@ -208,15 +238,16 @@ class AuthController extends GetxController implements GetxService {
   }
 
   void pickDmImageForRegistration(bool isLogo, bool isRemove) async {
-    if(isRemove) {
+    if (isRemove) {
       _pickedImage = null;
       _pickedIdentities = [];
-    }else {
+    } else {
       if (isLogo) {
-        _pickedImage = await authServiceInterface.pickImageFromGallery();
+        _pickedImage = await authServiceInterface.pickImageFromCamera();
       } else {
-        XFile? pickedIdentities = await authServiceInterface.pickImageFromGallery();
-        if(pickedIdentities != null) {
+        XFile? pickedIdentities = await authServiceInterface
+            .pickImageFromCamera();
+        if (pickedIdentities != null) {
           _pickedIdentities.add(pickedIdentities);
         }
       }
@@ -224,6 +255,72 @@ class AuthController extends GetxController implements GetxService {
     }
   }
 
+    showImagePickerBottomSheet({int? index, MediaData? mediaData,required bool isAadhaar,}) {
+    Get.bottomSheet(
+      Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(16),
+            topRight: Radius.circular(16),
+          ),
+        ),
+        child: Wrap(
+          children: [
+            ListTile(
+              leading: const Icon(Icons.camera_alt),
+              title: const Text('Camera'),
+              onTap: () async {
+                Get.back();
+                picImageFromGalleryCamera(isAadhaar,index: index , true);
+                // Use the image
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.photo_library),
+              title: const Text('Gallery'),
+              onTap: () async {
+                Get.back();
+                if(isAadhaar && index !=null && mediaData != null){
+
+                  pickFile(index,mediaData);
+                }else{
+                picImageFromGalleryCamera(false, false);}
+
+                // Use the image
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void picImageFromGalleryCamera(bool isAadhaarCard,bool isCamera,{int? index })async {
+    // _pickedIdentities = [];
+    if (isAadhaarCard) {
+     var pickedFile =  await authServiceInterface
+          .pickImageFromGalleryCamera(isCamera);
+    if (pickedFile != null && index != null) {
+      final platformFile = PlatformFile(
+        name: pickedFile.name,
+        path: pickedFile.path,
+        size: await pickedFile.length(),
+      );
+      final result = FilePickerResult([platformFile]);
+
+      _additionalList![index].add(result);
+    }
+    } else {
+      XFile? pickedIdentities = await authServiceInterface
+          .pickImageFromGalleryCamera(isCamera);
+      if (pickedIdentities != null) {
+        _pickedIdentities.add(pickedIdentities);
+      }
+    }
+    update();
+  }
   void removeIdentityImage(int index) {
     _pickedIdentities.removeAt(index);
     update();

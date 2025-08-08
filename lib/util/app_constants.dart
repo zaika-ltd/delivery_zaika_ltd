@@ -36,6 +36,7 @@ class AppConstants {
   static const String makeCollectedCashPaymentUri = '/api/v1/delivery-man/make-collected-cash-payment';
   static const String makeWalletAdjustmentUri = '/api/v1/delivery-man/make-wallet-adjustment';
   static const String walletPaymentListUri = '/api/v1/delivery-man/wallet-payment-list';
+  static const String originalDeliveryCharges = '/api/v1/delivery-man/original-delivery-charge-list';
   static const String addWithdrawMethodUri = '/api/v1/delivery-man/withdraw-method/store';
   static const String disbursementMethodListUri = '/api/v1/delivery-man/withdraw-method/list';
   static const String makeDefaultDisbursementMethodUri = '/api/v1/delivery-man/withdraw-method/make-default';

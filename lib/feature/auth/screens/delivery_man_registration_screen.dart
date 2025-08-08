@@ -528,7 +528,7 @@ class _DeliveryManRegistrationScreenState extends State<DeliveryManRegistrationS
                           if(index == authController.pickedIdentities.length) {
                             debugPrint(" $index authController.pickedIdentities.length ${authController.pickedIdentities.length}");
                             return index<2? InkWell(
-                              onTap: () => authController.pickDmImageForRegistration(false, false),
+                              onTap: () => authController.showImagePickerBottomSheet(isAadhaar: false),
                               child: DottedBorder(
                                 color: Theme.of(context).primaryColor,
                                 strokeWidth: 1,

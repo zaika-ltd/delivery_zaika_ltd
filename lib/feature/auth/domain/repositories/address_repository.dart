@@ -61,4 +61,10 @@ class AddressRepository implements AddressRepositoryInterface {
     throw UnimplementedError();
   }
 
+  @override
+  Future getChargesList() {
+    // TODO: implement getChargesList
+    throw UnimplementedError();
+  }
+
 }

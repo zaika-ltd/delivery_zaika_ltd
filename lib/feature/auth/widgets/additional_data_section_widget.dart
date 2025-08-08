@@ -126,7 +126,7 @@ class AdditionalDataSectionWidget extends StatelessWidget {
                 if(i == authController.additionalList![index].length && (authController.additionalList![index].length < (canAddMultipleImage ? 2 : 1))) {
                   return InkWell(
                     onTap: () async {
-                      await authController.pickFile(index, authController.dataList![index].mediaData!);
+                      await authController.showImagePickerBottomSheet(index:index,mediaData:  authController.dataList![index].mediaData!,isAadhaar: true);
                     },
                     child: Container(
                       height: 100, width: 500,

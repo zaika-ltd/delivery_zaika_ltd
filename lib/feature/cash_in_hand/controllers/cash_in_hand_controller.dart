@@ -1,5 +1,6 @@
 import 'package:stackfood_multivendor_driver/common/models/response_model.dart';
 import 'package:stackfood_multivendor_driver/common/widgets/custom_snackbar_widget.dart';
+import 'package:stackfood_multivendor_driver/feature/cash_in_hand/domain/models/delivery_charges_list.dart';
 import 'package:stackfood_multivendor_driver/feature/cash_in_hand/domain/models/wallet_payment_model.dart';
 import 'package:stackfood_multivendor_driver/feature/cash_in_hand/domain/services/cash_in_hand_service_interface.dart';
 import 'package:get/get.dart';
@@ -11,16 +12,24 @@ class CashInHandController extends GetxController implements GetxService {
 
   bool _isLoading = false;
   bool get isLoading => _isLoading;
-
+  int tabIndex=0;
+  String subTitleText='Earning History';
   List<Transactions>? _transactions;
   List<Transactions>? get transactions => _transactions;
+
+  List<DeliveryCharges>? _deliveryCharges;
+  List<DeliveryCharges>? get deliveryCharges=>_deliveryCharges;
 
   String? _digitalPaymentName;
   String? get digitalPaymentName => _digitalPaymentName;
 
   int _paymentIndex = 0;
   int get paymentIndex => _paymentIndex;
-
+  void changeTab(int index){
+    tabIndex=index;
+    subTitleText=index==0?'Earning':'Transactions';
+    update();
+  }
   Future<ResponseModel> makeCollectCashPayment(double amount, String paymentGatewayName) async {
     _isLoading = true;
     update();
@@ -54,6 +63,18 @@ class CashInHandController extends GetxController implements GetxService {
       _transactions!.addAll(transactions);
     }
     update();
+  }
+
+  Future<void> getDeliveryChargesList() async {
+
+    _deliveryCharges = null;
+    List<DeliveryCharges>? deliveryCharge = await cashInHandServiceInterface.getDeliveryChargesList();
+    if(deliveryCharge != null) {
+      _deliveryCharges = [];
+      _deliveryCharges!.addAll(deliveryCharge);
+    }
+    update();
+
   }
 
   void setPaymentIndex(int index){

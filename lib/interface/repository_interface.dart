@@ -3,5 +3,6 @@ abstract class RepositoryInterface<T> {
   Future<dynamic> update(Map<String, dynamic> body);
   Future<dynamic> delete(int id);
   Future<dynamic> getList();
+  // Future<dynamic> getChargesList();
   Future<dynamic> get(int id);
 }

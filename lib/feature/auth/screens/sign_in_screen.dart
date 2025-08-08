@@ -1,4 +1,5 @@
 import 'package:country_code_picker/country_code_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:stackfood_multivendor_driver/api/api_checker.dart';
 import 'package:stackfood_multivendor_driver/common/widgets/custom_snackbar_widget.dart';
 import 'package:stackfood_multivendor_driver/feature/auth/controllers/auth_controller.dart';
@@ -30,6 +31,11 @@ class SignInViewScreen extends StatelessWidget {
         : CountryCode.fromCountryCode(Get.find<SplashController>().configModel!.country!).dialCode;
     _phoneController.text =  Get.find<AuthController>().getUserNumber();
     _passwordController.text = Get.find<AuthController>().getUserPassword();
+    // if(kDebugMode){
+    //   _phoneController.text ='7567002486';
+    //   _passwordController.text ='Zaika@987';
+    // }
+
 
     return Scaffold(
       body: SafeArea(child: Center(
