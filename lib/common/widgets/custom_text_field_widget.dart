@@ -39,9 +39,12 @@ class CustomTextFieldWidget extends StatefulWidget {
   final String? labelText;
   final double? levelTextSize;
   final String? errorText;
-
+  final List<TextInputFormatter>? inputFormatters;
+  final int? maxLength;
   const CustomTextFieldWidget({
     super.key,
+    this.inputFormatters,
+    this.maxLength,
     this.titleText = 'Write something...',
     this.hintText = '',
     this.controller,
@@ -110,12 +113,14 @@ class CustomTextFieldWidgetState extends State<CustomTextFieldWidget> {
         keyboardType: widget.isAmount ? TextInputType.number : widget.inputType,
         cursorColor: Theme.of(context).primaryColor,
         textCapitalization: widget.capitalization,
-        maxLength: widget.inputType == TextInputType.phone ?10:null,
-        enabled: widget.isEnabled,
+        maxLength: widget.maxLength ?? (widget.inputType == TextInputType.phone ? 10 : null),
+    enabled: widget.isEnabled,
         autofocus: false,
         obscureText: widget.isPassword ? _obscureText : false,
+
+
         inputFormatters: widget.inputType == TextInputType.phone ? <TextInputFormatter>[FilteringTextInputFormatter.allow(RegExp('[0-9]'))]
-            : widget.isAmount ? [FilteringTextInputFormatter.allow(RegExp(r'\d'))] : widget.isNumber ? [FilteringTextInputFormatter.allow(RegExp(r'\d'))] : null,
+            : widget.isAmount ? [FilteringTextInputFormatter.allow(RegExp(r'\d'))] : widget.isNumber ? [FilteringTextInputFormatter.allow(RegExp(r'\d'))] :  widget.inputFormatters,
         decoration: InputDecoration(
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(Dimensions.radiusDefault),
@@ -202,5 +207,15 @@ class CustomTextFieldWidgetState extends State<CustomTextFieldWidget> {
     setState(() {
       _obscureText = !_obscureText;
     });
+  }
+}
+class UpperCaseTextFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
+    return TextEditingValue(
+      text: newValue.text.toUpperCase(),
+      selection: newValue.selection,
+    );
   }
 }

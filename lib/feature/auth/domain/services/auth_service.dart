@@ -111,32 +111,42 @@ class AuthService implements AuthServiceInterface {
 
   @override
   Future<XFile?> pickImageFromCamera() async{
-    XFile? pickImage = await ImagePicker().pickImage(source: ImageSource.values[0]);
-    if(pickImage != null) {
-      pickImage.length().then((value) {
-        if (value > 5000000) {
-          showCustomSnackBar('please_upload_lower_size_file'.tr);
-        } else {
-          return pickImage;
-        }
-      });
+    XFile? pickImage = await ImagePicker().pickImage(source: ImageSource.camera);
+
+    if (pickImage != null) {
+      final int fileSize = await pickImage.length();
+      if (fileSize > 5000000) {
+        showCustomSnackBar('please_upload_lower_size_file'.tr);
+        return null;
+      } else {
+        return pickImage;
+      }
     }
-    return pickImage;
+    return null;
   }
   @override
-  Future<XFile?> pickImageFromGalleryCamera(bool isCamera) async{
-
-    XFile? pickImage = await ImagePicker().pickImage(source: isCamera? ImageSource.camera:ImageSource.gallery);
-    if(pickImage != null) {
-      pickImage.length().then((value) {
-        if (value > 5000000) {
-          showCustomSnackBar('please_upload_lower_size_file'.tr);
-        } else {
-          return pickImage;
-        }
-      });
+  Future<XFile?> pickImageFromGalleryCamera(bool isCamera) async {
+    // ImagePicker se image pick karein (camera ya gallery se)
+    XFile? pickImage = await ImagePicker().pickImage(
+      source: isCamera ? ImageSource.camera : ImageSource.gallery,
+    );
+    // Agar user ne image select ki hai (pickImage null nahi hai)
+    if (pickImage != null) {
+      // File ka size (bytes mein) await karke nikalna hai
+      final int fileSize = await pickImage.length();
+      // Check karein ki file size 5MB se zyada hai ya nahi
+      if (fileSize > 5000000) {
+        // Agar size zyada hai, to user ko message dikhayein aur null return karein
+        showCustomSnackBar('please_upload_lower_size_file'.tr);
+        return null;
+      } else {
+        // Agar size sahi hai, to image file return karein
+        return pickImage;
+      }
     }
-    return pickImage;
+
+    // Agar user ne koi image select nahi ki, to null return karein
+    return null;
   }
 
   @override

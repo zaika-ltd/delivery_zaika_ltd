@@ -15,7 +15,8 @@ import 'package:stackfood_multivendor_driver/util/app_constants.dart';
 import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
-
+const String deliveryChannelId = 'zaika_delivery_partner';
+const String deliveryChannelName = 'Zaika Delivery Orders';
 class NotificationHelper {
 
   static Future<void> initialize(FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin) async {
@@ -87,6 +88,8 @@ class NotificationHelper {
           NotificationHelper.showNotification(message, flutterLocalNotificationsPlugin);
           Get.find<OrderController>().getCurrentOrders();
           Get.find<OrderController>().getLatestOrders();
+        }else if( type != 'new_order') {
+          NotificationHelper.showNotification(message, flutterLocalNotificationsPlugin);
         }
       }
     });
@@ -120,11 +123,11 @@ class NotificationHelper {
       String? title;
       String? body;
       String? image;
-      NotificationBodyModel? notificationBody;
+
 
       title = message.data['title'];
       body = message.data['body'];
-      notificationBody = convertNotification(message.data);
+      NotificationBodyModel?  notificationBody = convertNotification(message.data);
 
       image = (message.data['image'] != null && message.data['image'].isNotEmpty)
           ? message.data['image'].startsWith('http') ? message.data['image']
@@ -144,11 +147,12 @@ class NotificationHelper {
 
   static Future<void> showTextNotification(String title, String body, NotificationBodyModel? notificationBody, FlutterLocalNotificationsPlugin fln) async {
     const AndroidNotificationDetails androidPlatformChannelSpecifics = AndroidNotificationDetails(
-      'stackfood', 'stackfood_delivery name', playSound: true,
-      importance: Importance.max, priority: Priority.max, sound: RawResourceAndroidNotificationSound('notification'),
+      deliveryChannelId, deliveryChannelName, playSound: true,
+
+      importance: Importance.high, priority: Priority.high, sound: RawResourceAndroidNotificationSound('notification'),
     );
     const NotificationDetails platformChannelSpecifics = NotificationDetails(android: androidPlatformChannelSpecifics);
-    await fln.show(DateTime.now().millisecondsSinceEpoch % 100000, title, body, platformChannelSpecifics, payload: notificationBody != null ? jsonEncode(notificationBody.toJson()) : null);
+    await fln.show(0, title, body, platformChannelSpecifics, payload: notificationBody != null ? jsonEncode(notificationBody.toJson()) : null);
   }
 
   static Future<void> showBigTextNotification(String? title, String body, NotificationBodyModel? notificationBody, FlutterLocalNotificationsPlugin fln) async {
@@ -157,12 +161,13 @@ class NotificationHelper {
       contentTitle: title, htmlFormatContentTitle: true,
     );
     AndroidNotificationDetails androidPlatformChannelSpecifics = AndroidNotificationDetails(
-      'stackfood', 'stackfood_delivery name', importance: Importance.max,
-      styleInformation: bigTextStyleInformation, priority: Priority.max, playSound: true,
-      sound: const RawResourceAndroidNotificationSound('notification'),
+      deliveryChannelId, deliveryChannelName, importance: Importance.high,
+      styleInformation: bigTextStyleInformation, priority: Priority.high, playSound: true,
+
+      sound:   RawResourceAndroidNotificationSound('notification'),
     );
     NotificationDetails platformChannelSpecifics = NotificationDetails(android: androidPlatformChannelSpecifics);
-    await fln.show(DateTime.now().millisecondsSinceEpoch % 100000, title, body, platformChannelSpecifics, payload: notificationBody != null ? jsonEncode(notificationBody.toJson()) : null);
+    await fln.show(0, title, body, platformChannelSpecifics, payload: notificationBody != null ? jsonEncode(notificationBody.toJson()) : null);
   }
 
   static Future<void> showBigPictureNotificationHiddenLargeIcon(String? title, String? body, NotificationBodyModel? notificationBody, String image, FlutterLocalNotificationsPlugin fln) async {
@@ -174,13 +179,13 @@ class NotificationHelper {
       summaryText: body, htmlFormatSummaryText: true,
     );
     final AndroidNotificationDetails androidPlatformChannelSpecifics = AndroidNotificationDetails(
-      'stackfood', 'stackfood_delivery name',
-      largeIcon: FilePathAndroidBitmap(largeIconPath), priority: Priority.max, playSound: true,
-      styleInformation: bigPictureStyleInformation, importance: Importance.max,
-      sound: const RawResourceAndroidNotificationSound('notification'),
+      deliveryChannelId, deliveryChannelName,
+      largeIcon: FilePathAndroidBitmap(largeIconPath), priority: Priority.high, playSound: true,enableLights: true, visibility: NotificationVisibility.public,
+      styleInformation: bigPictureStyleInformation, importance: Importance.high,
+      sound:  RawResourceAndroidNotificationSound('notification'),
     );
     final NotificationDetails platformChannelSpecifics = NotificationDetails(android: androidPlatformChannelSpecifics);
-    await fln.show(DateTime.now().millisecondsSinceEpoch % 100000, title, body, platformChannelSpecifics, payload: notificationBody != null ? jsonEncode(notificationBody.toJson()) : null);
+    await fln.show(0, title, body, platformChannelSpecifics, payload: notificationBody != null ? jsonEncode(notificationBody.toJson()) : null);
   }
 
   static Future<String> _downloadAndSaveFile(String url, String fileName) async {
@@ -217,7 +222,7 @@ class NotificationHelper {
   }
 
 }
-
+@pragma('vm:entry-point')
 Future<dynamic> myBackgroundMessageHandler(RemoteMessage message) async {
   customPrint("onBackground: ${message.data}");
 }

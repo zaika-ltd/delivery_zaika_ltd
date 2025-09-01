@@ -1,11 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.zaika.delivery"
     xmlns:tools="http://schemas.android.com/tools">
-    <!-- io.flutter.app.FlutterApplication is an android.app.Application that
-         calls FlutterMain.startInitialization(this); in its onCreate method.
-         In most cases you can leave this as-is, but you if you want to provide
-         additional functionality it is fine to subclass or reimplement
-         FlutterApplication and put your custom class here. -->
+    <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="com.google.android.gms.permission.AD_ID"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -66,7 +62,7 @@
               />
             <meta-data
                 android:name="com.google.firebase.messaging.default_notification_channel_id"
-                android:value="stackfood" />
+                android:value="zaika_delivery_partner" />
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -81,7 +77,8 @@
         <service
             android:name="com.zaika.delivery.BackgroundService"
             android:enabled="true"
-            android:exported="false" />
+            android:exported="false"
+            android:foregroundServiceType="location|dataSync" />
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />

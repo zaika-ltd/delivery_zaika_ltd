@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:dotted_border/dotted_border.dart';
+import 'package:flutter/services.dart';
 import 'package:stackfood_multivendor_driver/feature/auth/controllers/auth_controller.dart';
 import 'package:stackfood_multivendor_driver/feature/auth/controllers/address_controller.dart';
 import 'package:stackfood_multivendor_driver/feature/language/controllers/localization_controller.dart';
@@ -506,13 +507,25 @@ class _DeliveryManRegistrationScreenState extends State<DeliveryManRegistrationS
                       const SizedBox(height: Dimensions.paddingSizeExtraLarge),
 
                       CustomTextFieldWidget(
-                        hintText: authController.identityTypeIndex == 0 ? 'Ex: XXXXX-XXXXXXX-X'
-                          : authController.identityTypeIndex == 1 ? 'L-XXX-XXX-XXX-XXX.' : 'XXX-XXXXX',
+                        hintText: authController.identityTypeIndex == 0 ? 'ABCDE1234F':'MH0012345678912',
                         errorText: ApiChecker.errors['identity_number'],
                         showLabelText: false,
                         controller: _identityNumberController,
                         focusNode: _identityNumberNode,
-                        inputAction: TextInputAction.done,
+                        inputType:TextInputType.text,
+                        inputAction: TextInputAction.none,
+                        capitalization: TextCapitalization.words,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.allow(RegExp(
+                              authController.identityTypeIndex == 0
+                                  ? r'[A-Z0-9]' // PAN allowed chars
+                                  : r'[A-Z0-9]' // DL allowed chars
+                          )),
+                          LengthLimitingTextInputFormatter(
+                              authController.identityTypeIndex == 0 ? 10 : 16
+                          ),
+                          UpperCaseTextFormatter(),
+                        ],
                       ),
                       const SizedBox(height: Dimensions.paddingSizeExtraLarge),
 
@@ -527,7 +540,7 @@ class _DeliveryManRegistrationScreenState extends State<DeliveryManRegistrationS
                           XFile? file = index == authController.pickedIdentities.length ? null : authController.pickedIdentities[index];
                           if(index == authController.pickedIdentities.length) {
                             debugPrint(" $index authController.pickedIdentities.length ${authController.pickedIdentities.length}");
-                            return index<2? InkWell(
+                            return index<1? InkWell(
                               onTap: () => authController.showImagePickerBottomSheet(isAadhaar: false),
                               child: DottedBorder(
                                 color: Theme.of(context).primaryColor,
@@ -753,7 +766,7 @@ class _DeliveryManRegistrationScreenState extends State<DeliveryManRegistrationS
 
         data.addAll(DeliveryManBodyModel(
           fName: fName, lName: lName, password: password, phone: numberWithCountryCode, email: email,
-          identityNumber: identityNumber, identityType: authController.identityTypeList[authController.identityTypeIndex],
+          identityNumber: identityNumber, identityType: authController.identityTypeList[authController.identityTypeIndex]=="Pan Card"?"passport":"driving_license",
           earning: authController.dmTypeIndex == 0 ? '1' : '0', zoneId: addressController.zoneList![addressController.selectedZoneIndex!].id.toString(),
           vehicleId: authController.vehicles![authController.vehicleIndex! - 1].id.toString(),
         ).toJson());

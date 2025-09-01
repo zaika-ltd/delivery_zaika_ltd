@@ -11,6 +11,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:stackfood_multivendor_driver/feature/profile/domain/models/record_location_body.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:stackfood_multivendor_driver/feature/order/controllers/order_controller.dart';
 
 class ProfileController extends GetxController implements GetxService {
   final ProfileServiceInterface profileServiceInterface;
@@ -98,11 +99,14 @@ class ProfileController extends GetxController implements GetxService {
     ResponseModel responseModel = await profileServiceInterface.updateActiveStatus(shiftId: shiftId);
     bool isSuccess;
     if (responseModel.isSuccess) {
+
       _profileModel!.active = _profileModel!.active == 0 ? 1 : 0;
       showCustomSnackBar(responseModel.message, isError: false);
       isSuccess = true;
       if (_profileModel!.active == 1) {
-        profileServiceInterface.checkPermission(() => startLocationRecord());
+        await getProfile();
+        // profileServiceInterface.checkPermission(() => startLocationRecord());
+
 
         /*LocationPermission permission = await Geolocator.checkPermission();
         if(permission == LocationPermission.denied || permission == LocationPermission.deniedForever
@@ -183,9 +187,127 @@ class ProfileController extends GetxController implements GetxService {
     _timer?.cancel();
     _timer = Timer.periodic(const Duration(seconds: 10), (timer) {
       recordLocation();
+      checkShiftStatus();
     });
   }
+// Add this method to your ProfileController class
+//   void checkShiftStatus() {
+//     if (_profileModel != null && _profileModel!.shiftStartTime != null && _profileModel!.shiftEndTime != null && _profileModel!.active == 1) {
+//       try {
+//         final DateTime now = DateTime.now();
+//
+//         final List<String> startTimeParts = _profileModel!.shiftStartTime!.split(':');
+//         final int startHour = int.parse(startTimeParts[0]);
+//         final int startMinute = int.parse(startTimeParts[1]);eModel!.shiftStartTime!.split(':');
+//
+//
+//         // Parse the end time
+//         final List<String> endTimeParts = _profileModel!.shiftEndTime!.split(':');
+//         final int endHour = int.parse(endTimeParts[0]);
+//         final int endMinute = int.parse(endTimeParts[1]);
+//
+//         // Create DateTime objects for today's shift
+//         DateTime shiftStartTime = DateTime(now.year, now.month, now.day, startHour, startMinute);
+//         DateTime shiftEndTime = DateTime(now.year, now.month, now.day, endHour, endMinute);
+//
+//         if (shiftEndTime.isBefore(shiftStartTime)) {
+//           shiftEndTime = shiftEndTime.add(const Duration(days: 1));
+//         }
+//         // --- DEBUGGING PRINTS ---
+//         debugPrint('Current Time: $now');
+//         debugPrint('Shift Start Time: $shiftStartTime');
+//         debugPrint('Shift End Time: $shiftEndTime');
+//
+//         if (!(now.isAfter(shiftStartTime) && now.isBefore(shiftEndTime))) {
+//           // --- YAHAN NAYA LOGIC ADD KIYA GAYA HAI ---
+//           // OrderController se active orders check karein
+//           final orderController = Get.find<OrderController>();
+//
+//           // Check karein ki currentOrderList null nahi hai aur empty bhi nahi hai
+//           bool hasActiveOrder = orderController.currentOrderList != null &&
+//               orderController.currentOrderList!.isNotEmpty;
+//
+//           if (hasActiveOrder) {
+//             // Agar active order HAI, toh shift end time ko 30 minute aage badha dein.
+//             DateTime extendedShiftEndTime = shiftEndTime.add(
+//                 const Duration(minutes: 30));
+//
+//             // Naye time ko "HH:mm" format mein convert karein
+//             String newEndTimeString = "${extendedShiftEndTime.hour
+//                 .toString()
+//                 .padLeft(2, '0')}:${extendedShiftEndTime.minute
+//                 .toString()
+//                 .padLeft(2, '0')}";
+//
+//             // Profile model mein end time update kar dein. Agli check is naye time ko use karegi.
+//             _profileModel!.shiftEndTime = newEndTimeString;
+//
+//             debugPrint(
+//                 'Active order ke kaaran shift 30 min badha di gayi. Naya End Time: $newEndTimeString');
+//             update(); // Listeners ko notify karein
+//
+//           } else {
+//             // Agar shift khatam ho gayi hai aur koi active order NAHI hai, toh status offline kar dein.
+//             debugPrint(
+//                 'Shift khatam, koi active order nahi. Status offline kiya ja raha hai.');
+//             updateActiveStatus();
+//           }
+//         }
+//
+//
+//       } catch (e) {
+//         debugPrint('Error parsing shift times: $e');
+//       }
+//     }
+//   }
+//
+//
+  void checkShiftStatus() {
+    // Sirf tabhi check karein jab profile ho, shift time set ho, aur driver online ho.
+    if (_profileModel != null && _profileModel!.shiftStartTime != null && _profileModel!.shiftEndTime != null && _profileModel!.active == 1) {
+      try {
+        final DateTime now = DateTime.now();
+        final List<String> startTimeParts = _profileModel!.shiftStartTime!.split(':');
+        final int startHour = int.parse(startTimeParts[0]);
+        final int startMinute = int.parse(startTimeParts[1]);
 
+        // End time ko parse karein
+        final List<String> endTimeParts = _profileModel!.shiftEndTime!.split(':');
+        final int endHour = int.parse(endTimeParts[0]);
+        final int endMinute = int.parse(endTimeParts[1]);
+        DateTime shiftStartTime = DateTime(now.year, now.month, now.day, startHour, startMinute);
+        DateTime shiftEndTime = DateTime(now.year, now.month, now.day, endHour, endMinute);
+
+        if (shiftEndTime.isBefore(shiftStartTime)) {
+          shiftEndTime = shiftEndTime.add(const Duration(days: 1));
+        }
+        debugPrint('Current Time: $now');
+        debugPrint('Shift Start Time: $shiftStartTime');
+        debugPrint('Shift End Time: $shiftEndTime');
+        if (!(now.isAfter(shiftStartTime) && now.isBefore(shiftEndTime))) {
+          final orderController = Get.find<OrderController>();
+          bool hasActiveOrder = orderController.currentOrderList != null && orderController.currentOrderList!.isNotEmpty;
+
+          if (hasActiveOrder) {
+            // Agar active order HAI, toh shift end time ko 30 minute aage badha dein.
+            DateTime extendedShiftEndTime = shiftEndTime.add(const Duration(minutes: 30));
+            String newEndTimeString = "${extendedShiftEndTime.hour.toString().padLeft(2, '0')}:${extendedShiftEndTime.minute.toString().padLeft(2, '0')}:00";
+
+            _profileModel!.shiftEndTime = newEndTimeString;
+
+            debugPrint('Active order ke kaaran shift 30 min badha di gayi. Naya End Time: $newEndTimeString');
+            update(); // Listeners ko notify karein
+          } else {
+
+            debugPrint('Shift khatam, koi active order nahi. Status offline kiya ja raha hai.');
+            updateActiveStatus();
+          }
+        }
+      } catch (e) {
+        debugPrint('Shift times parse karne mein error: $e');
+      }
+    }
+  }
   void stopLocationRecord() {
     _timer?.cancel();
   }

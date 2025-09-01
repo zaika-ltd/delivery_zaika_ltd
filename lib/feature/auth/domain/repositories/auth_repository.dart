@@ -60,7 +60,6 @@ class AuthRepository implements AuthRepositoryInterface {
       if(!GetPlatform.isWeb) {
         FirebaseMessaging.instance.subscribeToTopic(AppConstants.topic);
         FirebaseMessaging.instance.subscribeToTopic(sharedPreferences.getString(AppConstants.zoneTopic)!);
-
         FirebaseMessaging.instance.subscribeToTopic(AppConstants.maintenanceModeTopic);
       }
     }

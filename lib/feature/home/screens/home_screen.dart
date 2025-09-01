@@ -1,4 +1,5 @@
 // import 'package:disable_battery_optimization/disable_battery_optimization.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:stackfood_multivendor_driver/common/widgets/custom_alert_dialog_widget.dart';
 import 'package:stackfood_multivendor_driver/feature/notification/controllers/notification_controller.dart';
 import 'package:stackfood_multivendor_driver/feature/order/controllers/order_controller.dart';
@@ -24,6 +25,8 @@ import 'package:flutter_switch/flutter_switch.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
+
+import '../../../main.dart' as NotificationService;
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -79,6 +82,24 @@ class HomeScreen extends StatelessWidget {
               ]);
             }),
             onPressed: () => Get.toNamed(RouteHelper.getNotificationRoute()),
+            // onPressed: () async {
+            //   // Local test notification
+            //   await NotificationService.flutterLocalNotificationsPlugin.show(
+            //     0,
+            //     "Zaika Delivery Test",
+            //     "New delivery assigned 🚴",
+            //     const NotificationDetails(
+            //       android: AndroidNotificationDetails(
+            //         'zaika_delivery_orders',
+            //         'Zaika Delivery Orders',
+            //         importance: Importance.high,
+            //         priority: Priority.high,
+            //         sound: RawResourceAndroidNotificationSound('notification'),
+            //         playSound: true,
+            //       ),
+            //     ),
+            //   );
+            // },
           ),
 
           GetBuilder<ProfileController>(builder: (profileController) {
@@ -173,7 +194,6 @@ class HomeScreen extends StatelessWidget {
                 bool hasActiveOrder = orderController.currentOrderList == null || orderController.currentOrderList!.isNotEmpty;
                 bool hasMoreOrder = orderController.currentOrderList != null && orderController.currentOrderList!.length > 1;
                 return Column(children: [
-
                   hasActiveOrder ? TitleWidget(
                     title: 'active_order'.tr, onTap: hasMoreOrder ? () {
                       Get.toNamed(RouteHelper.getRunningOrderRoute(), arguments: const RunningOrderScreen());

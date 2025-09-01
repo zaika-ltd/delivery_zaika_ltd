@@ -34,6 +34,9 @@ class AdditionalDataSectionWidget extends StatelessWidget {
           child: showTextField ? CustomTextFieldWidget(
             hintText: authController.dataList![index].placeholderData ?? '',
             showLabelText: false,
+          maxLength: 12,
+          isNumber: true,
+
             controller: authController.additionalList![index],
             inputType: authController.dataList![index].fieldType == 'number' ? TextInputType.number
                 : authController.dataList![index].fieldType == 'phone' ? TextInputType.phone
@@ -41,7 +44,9 @@ class AdditionalDataSectionWidget extends StatelessWidget {
                 : TextInputType.text,
             isRequired: authController.dataList![index].isRequired == 1,
             capitalization: TextCapitalization.words,
-          ) : showDate ? Container(
+
+          )
+              : showDate ? Container(
             height: 50,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(Dimensions.radiusDefault),

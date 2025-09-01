@@ -31,12 +31,10 @@ class SignInViewScreen extends StatelessWidget {
         : CountryCode.fromCountryCode(Get.find<SplashController>().configModel!.country!).dialCode;
     _phoneController.text =  Get.find<AuthController>().getUserNumber();
     _passwordController.text = Get.find<AuthController>().getUserPassword();
-    // if(kDebugMode){
-    //   _phoneController.text ='7567002486';
-    //   _passwordController.text ='Zaika@987';
-    // }
-
-
+    if(kDebugMode){
+      _phoneController.text ='7567002486';
+      _passwordController.text ='Zaika@987';
+    }
     return Scaffold(
       body: SafeArea(child: Center(
         child: SingleChildScrollView(
