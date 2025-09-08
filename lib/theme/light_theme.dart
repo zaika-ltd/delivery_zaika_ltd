@@ -9,13 +9,21 @@ ThemeData light = ThemeData(
   hintColor: const Color(0xFF5E6472),
   cardColor: Colors.white,
   shadowColor: Colors.black.withValues(alpha: 0.03),
-  textButtonTheme: TextButtonThemeData(style: TextButton.styleFrom(foregroundColor: const Color(0xFFEF7822))), colorScheme: const ColorScheme.light(primary: Color(0xFFEF7822), secondary: Color(0xFFEF7822)).copyWith(error: const Color(0xFFE84D4F)),
-  popupMenuTheme: const PopupMenuThemeData(color: Colors.white, surfaceTintColor: Colors.white),
-  dialogTheme: const DialogTheme(surfaceTintColor: Colors.white),
-  floatingActionButtonTheme: FloatingActionButtonThemeData(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(500))),
-  bottomAppBarTheme: const BottomAppBarTheme(
-    surfaceTintColor: Colors.white, height: 60,
+  textButtonTheme: TextButtonThemeData(
+      style: TextButton.styleFrom(foregroundColor: const Color(0xFFEF7822))),
+  colorScheme: const ColorScheme.light(
+          primary: Color(0xFFEF7822), secondary: Color(0xFFEF7822))
+      .copyWith(error: const Color(0xFFE84D4F)),
+  popupMenuTheme: const PopupMenuThemeData(
+      color: Colors.white, surfaceTintColor: Colors.white),
+  dialogTheme: const DialogThemeData(surfaceTintColor: Colors.white),
+  floatingActionButtonTheme: FloatingActionButtonThemeData(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(500))),
+  bottomAppBarTheme: const BottomAppBarThemeData(
+    surfaceTintColor: Colors.white,
+    height: 60,
     padding: EdgeInsets.symmetric(vertical: 5),
   ),
-  dividerTheme: const DividerThemeData(thickness: 0.5, color: Color(0xFFA0A4A8)),
+  dividerTheme:
+      const DividerThemeData(thickness: 0.5, color: Color(0xFFA0A4A8)),
 );
