@@ -7,7 +7,7 @@ class AppConstants {
 
   ///Flutter SDK 3.27.1
 
-  static const String baseUrl = 'https://staging.zaika.ltd';
+  static String baseUrl = '';
   static const String configUri = '/api/v1/config';
   static const String forgerPasswordUri =
       '/api/v1/auth/delivery-man/forgot-password';

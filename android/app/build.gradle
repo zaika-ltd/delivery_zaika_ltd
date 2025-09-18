@@ -32,7 +32,19 @@ if (keystorePropertiesFile.exists()) {
 android {
     namespace "com.zaika.delivery"
     compileSdkVersion 36
+    flavorDimensions "default"
 
+    productFlavors {
+        staging {
+            dimension "default"
+            applicationIdSuffix ".staging"
+            resValue "string", "app_name", "Zaika Delivery Staging"
+        }
+        production {
+            dimension "default"        
+            resValue "string", "app_name", "Zaika Delivery"
+        }
+    }
     compileOptions {
         coreLibraryDesugaringEnabled true
         sourceCompatibility JavaVersion.VERSION_1_8

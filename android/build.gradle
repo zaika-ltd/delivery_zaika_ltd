@@ -1,3 +1,18 @@
+buildscript {
+    // Define the updated Kotlin version here
+    ext.kotlin_version = '2.1.0'
+    repositories {
+        google()
+        mavenCentral() // Use mavenCentral instead of jcenter
+    }
+
+    dependencies {
+        // Update the Android Gradle Plugin version here
+        classpath 'com.android.tools.build:gradle:8.6.0'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
 allprojects {
     repositories {
         google()
