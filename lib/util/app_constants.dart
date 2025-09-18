@@ -1,3 +1,4 @@
+import 'package:stackfood_multivendor_driver/feature/config/app_config.dart';
 import 'package:stackfood_multivendor_driver/feature/language/domain/models/language_model.dart';
 import 'package:stackfood_multivendor_driver/util/images.dart';
 
@@ -6,8 +7,8 @@ class AppConstants {
   static const double appVersion = 8.0;
 
   ///Flutter SDK 3.27.1
-
-  static String baseUrl = '';
+  static String get baseUrl => AppConfig.instance.baseUrl;
+  // static String baseUrl = '';
   static const String configUri = '/api/v1/config';
   static const String forgerPasswordUri =
       '/api/v1/auth/delivery-man/forgot-password';

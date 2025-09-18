@@ -10,8 +10,8 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
-import 'package:stackfood_multivendor_driver/util/app_constants.dart';
 import 'package:url_strategy/url_strategy.dart';
+import 'feature/config/app_config.dart';
 import 'helper/get_di.dart' as di;
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
@@ -19,7 +19,8 @@ final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 
 Future<void> main() async {
   HttpOverrides.global = MyHttpOverrides();
-  AppConstants.baseUrl = 'https://zaika.ltd';
+  AppConfig.init(Environment.PRODUCTION);
+  // AppConstants.baseUrl = 'https://zaika.ltd';
 
   setPathUrlStrategy();
   WidgetsFlutterBinding.ensureInitialized();

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:stackfood_multivendor_driver/app.dart';
+import 'package:stackfood_multivendor_driver/feature/config/app_config.dart';
 
 import 'package:stackfood_multivendor_driver/feature/notification/domain/models/notification_body_model.dart';
 import 'package:stackfood_multivendor_driver/helper/notification_helper.dart';
@@ -19,8 +20,8 @@ final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 
 Future<void> main() async {
   HttpOverrides.global = MyHttpOverrides();
-
-  AppConstants.baseUrl = 'https://staging.zaika.ltd';
+  AppConfig.init(Environment.STAGING);
+  // AppConstants.baseUrl = 'https://staging.zaika.ltd';
   setPathUrlStrategy();
   WidgetsFlutterBinding.ensureInitialized();
   Map<String, Map<String, String>> languages = await di.init();
