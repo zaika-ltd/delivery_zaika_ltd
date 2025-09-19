@@ -1,10 +1,8 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:stackfood_multivendor_driver/app.dart';
-
 import 'package:stackfood_multivendor_driver/feature/notification/domain/models/notification_body_model.dart';
 import 'package:stackfood_multivendor_driver/helper/notification_helper.dart';
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +18,6 @@ final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 Future<void> main() async {
   HttpOverrides.global = MyHttpOverrides();
   AppConfig.init(Environment.PRODUCTION);
-  // AppConstants.baseUrl = 'https://zaika.ltd';
 
   setPathUrlStrategy();
   WidgetsFlutterBinding.ensureInitialized();

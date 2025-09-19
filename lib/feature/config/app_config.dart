@@ -22,7 +22,7 @@ class AppConfig {
           baseUrl = 'https://staging.zaika.ltd';
           break;
         case Environment.PRODUCTION:
-          baseUrl = 'https://production.zaika.ltd';
+          baseUrl = 'https://zaika.ltd';
           break;
       }
       _instance = AppConfig(environment: env, baseUrl: baseUrl);
