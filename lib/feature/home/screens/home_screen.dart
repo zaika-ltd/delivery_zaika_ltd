@@ -1,5 +1,3 @@
-// import 'package:disable_battery_optimization/disable_battery_optimization.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:stackfood_multivendor_driver/common/widgets/custom_alert_dialog_widget.dart';
 import 'package:stackfood_multivendor_driver/feature/notification/controllers/notification_controller.dart';
 import 'package:stackfood_multivendor_driver/feature/order/controllers/order_controller.dart';
@@ -25,8 +23,6 @@ import 'package:flutter_switch/flutter_switch.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
-
-import '../../../main_production.dart' as NotificationService;
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});

@@ -11,7 +11,7 @@ class AddressRepository implements AddressRepositoryInterface {
   AddressRepository({required this.apiClient, required this.sharedPreferences});
 
   @override
-  Future<List<ZoneModel>?> getList() async{
+  Future<List<ZoneModel>?> getList() async {
     List<ZoneModel>? zoneList;
     Response response = await apiClient.getData(AppConstants.zoneListUri);
     if (response.statusCode == 200) {
@@ -30,7 +30,6 @@ class AddressRepository implements AddressRepositoryInterface {
   String? getUserAddress() {
     return sharedPreferences.getString(AppConstants.userAddress);
   }
-
 
   @override
   Future<bool> saveUserAddress(String address) async {
@@ -61,10 +60,7 @@ class AddressRepository implements AddressRepositoryInterface {
     throw UnimplementedError();
   }
 
-  @override
   Future getChargesList() {
-    // TODO: implement getChargesList
     throw UnimplementedError();
   }
-
 }

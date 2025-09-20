@@ -1,21 +1,17 @@
 import 'package:stackfood_multivendor_driver/feature/cash_in_hand/controllers/cash_in_hand_controller.dart';
-import 'package:stackfood_multivendor_driver/helper/price_converter_helper.dart';
 import 'package:stackfood_multivendor_driver/util/dimensions.dart';
-import 'package:stackfood_multivendor_driver/util/styles.dart';
 import 'package:stackfood_multivendor_driver/common/widgets/custom_app_bar_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-import '../../../helper/date_converter_helper.dart';
 import '../widgets/earning_order_widget.dart';
 import '../widgets/transaction_history.dart';
-import 'cash_in_hand_screen.dart';
 
 class TransactionHistoryScreen extends StatefulWidget {
   const TransactionHistoryScreen({super.key});
 
   @override
-  State<TransactionHistoryScreen> createState() => _TransactionHistoryScreenState();
+  State<TransactionHistoryScreen> createState() =>
+      _TransactionHistoryScreenState();
 }
 
 class _TransactionHistoryScreenState extends State<TransactionHistoryScreen> {
@@ -23,7 +19,7 @@ class _TransactionHistoryScreenState extends State<TransactionHistoryScreen> {
   @override
   void initState() {
     super.initState();
-    
+
     Get.find<CashInHandController>().getDeliveryChargesList();
     Get.find<CashInHandController>().getWalletPaymentList();
   }
@@ -31,7 +27,6 @@ class _TransactionHistoryScreenState extends State<TransactionHistoryScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(kToolbarHeight),
         child: GetBuilder<CashInHandController>(
@@ -42,7 +37,7 @@ class _TransactionHistoryScreenState extends State<TransactionHistoryScreen> {
       ),
 
       body: GetBuilder<CashInHandController>(builder: (cashInHandController) {
-        return    SingleChildScrollView(
+        return SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
           child: Padding(
             padding: const EdgeInsets.all(Dimensions.paddingSizeLarge),
@@ -51,13 +46,13 @@ class _TransactionHistoryScreenState extends State<TransactionHistoryScreen> {
               switchInCurve: Curves.easeIn,
               switchOutCurve: Curves.easeOut,
               child: cashInHandController.tabIndex == 0
-                  ? EarningOrderWidget(cashInHandController:
-              cashInHandController)
-                  : TransactionWidget(cashInHandController:  cashInHandController),
+                  ? EarningOrderWidget(
+                      cashInHandController: cashInHandController)
+                  : TransactionWidget(
+                      cashInHandController: cashInHandController),
             ),
           ),
         );
-
       }),
 
       // body: GetBuilder<CashInHandController>(builder: (cashInHandController) {

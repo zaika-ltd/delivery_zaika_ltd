@@ -27,23 +27,18 @@ class EarningOrderWidget extends StatelessWidget {
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       itemBuilder: (context, index) {
-                        String dateTime= DateConverter.orderDateTime(
-                            cashInHandController
-                                .deliveryCharges![index].date
+                        String dateTime = DateConverter.orderDateTime(
+                            cashInHandController.deliveryCharges![index].date
                                 .toString(),
-                            cashInHandController
-                                .deliveryCharges![index].time
+                            cashInHandController.deliveryCharges![index].time
                                 .toString());
                         return EarningTransactionCard(
-
                             amount: cashInHandController.deliveryCharges![index]
                                     .deliveryFeeEarned ??
                                 0,
-                            date: dateTime ??
-                                "",
-                            orderId:'OrderID#${cashInHandController
-                                    .deliveryCharges![index].orderId
-                            } ');
+                            date: dateTime == 'null null' ? '' : dateTime,
+                            orderId:
+                                'OrderID#${cashInHandController.deliveryCharges![index].orderId} ');
                       },
                     )
                   : Padding(

@@ -16,7 +16,6 @@ import 'package:stackfood_multivendor_driver/common/widgets/custom_image_widget.
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../helper/date_converter_helper.dart';
 import '../widgets/earning_order_widget.dart';
 import '../widgets/transaction_history.dart';
 
@@ -568,9 +567,12 @@ class _CashInHandScreenState extends State<CashInHandScreen> {
                               switchInCurve: Curves.easeIn,
                               switchOutCurve: Curves.easeOut,
                               child: cashInHandController.tabIndex == 0
-                                  ? EarningOrderWidget(cashInHandController:
-                                      cashInHandController)
-                                  : TransactionWidget(cashInHandController:  cashInHandController),
+                                  ? EarningOrderWidget(
+                                      cashInHandController:
+                                          cashInHandController)
+                                  : TransactionWidget(
+                                      cashInHandController:
+                                          cashInHandController),
                             )
                           ]),
                         ),
@@ -590,8 +592,4 @@ class _CashInHandScreenState extends State<CashInHandScreen> {
       }),
     );
   }
-
-
-
 }
-
